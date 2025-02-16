@@ -22,7 +22,7 @@ struct SimpleBookSalesView: View {
                 }
             }
             WeeklySalesChartsView(salesViewModel: salesViewModel)
-                .frame(height: 100)
+                .frame(height: 70)
                 .chartXAxis(.hidden)
                 .chartYAxis(.hidden)
         }

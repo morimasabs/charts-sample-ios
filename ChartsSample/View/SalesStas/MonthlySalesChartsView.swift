@@ -9,13 +9,15 @@ import SwiftUI
 import Charts
 
 struct MonthlySalesChartsView: View {
-    let salesData: [Sale]
+    @ObservedObject var salesViewModel: SalesViewModel
     
     var body: some View {
-        Chart(salesData) { sale in
-            BarMark(x: .value("Month", sale.saleDate, unit: .month),
-                    y: .value("Sales", sale.quantity))
-            .foregroundStyle(Color.blue.gradient)
+        Chart(salesViewModel.salesByMonth, id: \.day) {
+            BarMark(
+                x: .value("Month", $0.day, unit: .month),
+                y: .value("Sales", $0.sales)
+            )
+            .foregroundStyle(.blue.gradient)
         }
         .chartXAxis {
             AxisMarks { _ in
@@ -23,7 +25,7 @@ struct MonthlySalesChartsView: View {
             }
         }
         .chartYAxis {
-            AxisMarks(position: .leading, values: [100, 200]) { _ in
+            AxisMarks(position: .leading) { _ in
                 // MARK: 波線をつくることができる
                 AxisGridLine(stroke: .init(dash: [10, 5]))
                 AxisValueLabel()
@@ -33,7 +35,7 @@ struct MonthlySalesChartsView: View {
 }
 
 #Preview {
-    MonthlySalesChartsView(salesData: Sale.threeMonthsExamples())
+    MonthlySalesChartsView(salesViewModel: .preview)
         .aspectRatio(1, contentMode: .fit)
         .padding()
 }

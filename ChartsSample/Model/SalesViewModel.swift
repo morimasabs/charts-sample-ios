@@ -146,7 +146,7 @@ class SalesViewModel: ObservableObject {
         
         let calendar = Calendar.current
         for sale in sales {
-            guard let startOfMonth = calendar.date(from: calendar.dateComponents([.month], from: sale.saleDate)) else { continue }
+            guard let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: sale.saleDate)) else { continue }
             if salesByMonth[startOfMonth] != nil {
                 salesByMonth[startOfMonth]!.append(sale)
             } else {
