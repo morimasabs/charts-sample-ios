@@ -21,7 +21,7 @@ struct DetailBookSalesView: View {
     
     var body: some View {
         VStack {
-            Picker(selection: $selectedTimeInterval) {
+            Picker(selection: $selectedTimeInterval.animation()) {
                 ForEach(TimeInterval.allCases) { interval in
                     Text(interval.rawValue)
                 }
@@ -29,21 +29,28 @@ struct DetailBookSalesView: View {
                 Text("グラフの表示期間")
             }
             .pickerStyle(.segmented)
-        }
-        
-        Group {
-            switch selectedTimeInterval {
-            case .day:
-                DailySalesCharsView(salesViewModel: salesViewModel)
-            case .week:
-                WeeklySalesChartsView(salesViewModel: salesViewModel)
-            case .month:
-                MonthlySalesChartsView(salesViewModel: salesViewModel)
+            
+            Group {
+                Text("過去90日間の売り上げは") +
+                Text("\(salesViewModel.totalSales)冊").bold().foregroundStyle(Color.accentColor)
             }
+            .padding(.vertical)
+            
+            Group {
+                switch selectedTimeInterval {
+                case .day:
+                    DailySalesCharsView(salesViewModel: salesViewModel)
+                case .week:
+                    WeeklySalesChartsView(salesViewModel: salesViewModel)
+                case .month:
+                    MonthlySalesChartsView(salesViewModel: salesViewModel)
+                }
+            }
+            .aspectRatio(0.8, contentMode: .fit)
+            
+            Spacer()
         }
-        .aspectRatio(0.8, contentMode: .fit)
-        
-        Spacer()
+        .padding()
     }
 }
 
